@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:mvc="http://www.springframework.org/schema/mvc"   
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+ http://www.springframework.org/schema/tx 
+  	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd ">
+    
+    <context:component-scan base-package="com.hcddz.biz"></context:component-scan> 
+	<bean id="dataSoure" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"> </property>
+		<property name="url" value="jdbc:mysql://119.28.43.116:3306"> </property>
+		<property name="username" value="tonzhen"> </property>
+		<property name="password" value="1234"> </property>
+	</bean>
+	<!-- 配置 sqlsession 工厂-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSoure"></property>
+		<!-- 读取mybaitis的配置文件 -->
+		<property name="configLocation" value="classpath:mybatisConfig.xml"></property>
+		<!-- 读取mybaitis的映射文件 -->
+		<property name="mapperLocations" value="classpath:com/hcddz/mapper/*.xml"></property>
+	</bean>
+	<!-- 自动将mybatis的接口转换成bean，并注入到spring容器中 -->
+		<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+			<property name="basePackage" value="com.hcddz.dao"></property>
+			<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+		</bean>
+		
+</beans>
